@@ -11,8 +11,8 @@ from PANDA.__init__ import LOGGERS
 BOT_TOKEN = getenv("BOT_TOKEN", "")
 MONGO_DB_URI = getenv("MONGO_DB_URI", "")
 STRING_SESSION = getenv("STRING_SESSION", "")
-OWNER_ID = gentenv("OWNER_ID", "")
-LOGGER_ID = gentenv("LOGGER_ID", "")
+OWNER_ID = getenv("OWNER_ID", "")
+LOGGER_ID = getenv("LOGGER_ID", "")
 
 
 assistants = []
