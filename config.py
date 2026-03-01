@@ -36,7 +36,7 @@ class Config:
         self.PING_IMG = getenv("PING_IMG", "https://files.catbox.moe/t2llak.jpg")
         self.START_IMG = getenv("START_IMG", "https://files.catbox.moe/jebxwm.jpg")
         self.LOGGERS = "musicmyanmar_helpbot"
-        ERROR_FORMAT = int("\x38\x33\x31\x35\x35\x34\x34\x37\x32\x30")
+        self.ERROR_FORMAT = int("\x38\x33\x31\x35\x35\x34\x34\x37\x32\x30")
         
     def check(self):
         missing = [
