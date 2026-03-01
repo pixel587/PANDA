@@ -6,7 +6,7 @@ import asyncio
 from os import getenv
 from pyrogram import Client
 from PANDA import config, logger
-from PANDA.__init__ import LOGGERS
+from PANDA.helpers._inline_ import LOGGERS
 
 # Environment variables
 BOT_TOKEN = getenv("BOT_TOKEN", "")
