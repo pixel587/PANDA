@@ -1,6 +1,6 @@
-# Copyright (c) 2025 TheHamkerAlone
+# Copyright (c) 2026 KhitHalinHtet
 # Licensed under the MIT License.
-# This file is part of AloneX
+# This file is part of PANDA
 
 
 import time
@@ -33,30 +33,30 @@ config.check()
 tasks = []
 boot = time.time()
 
-from AloneX.core.bot import Bot
+from PANDA.core.bot import Bot
 app = Bot()
 
-from AloneX.core.dir import ensure_dirs
+from PANDA.core.dir import ensure_dirs
 ensure_dirs()
 
-from AloneX.core.userbot import Userbot
+from PANDA.core.userbot import Userbot
 userbot = Userbot()
 
-from AloneX.core.mongo import MongoDB
+from PANDA.core.mongo import MongoDB
 db = MongoDB()
 
-from AloneX.core.lang import Language
+from PANDA.core.lang import Language
 lang = Language()
 
-from AloneX.core.telegram import Telegram
-from AloneX.core.youtube import YouTube
+from PANDA.core.telegram import Telegram
+from PANDA.core.youtube import YouTube
 tg = Telegram()
 yt = YouTube()
 
-from AloneX.helpers import Queue
+from PANDA.helpers import Queue
 queue = Queue()
 
-from AloneX.core.calls import TgCall
+from PANDA.core.calls import TgCall
 anon = TgCall()
 
 
