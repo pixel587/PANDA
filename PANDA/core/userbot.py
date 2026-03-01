@@ -24,21 +24,25 @@ class Userbot(Client):
         Initializes the userbot with multiple clients.
         """
         self.clients = []
+        
+        self.one = None
+        self.two = None
+        self.three = None
+        
         clients = {"one": "SESSION1", "two": "SESSION2", "three": "SESSION3"}
         for key, string_key in clients.items():
-            name = f"PANDAUB{key[-1]}"
+            
+            name = f"PANDAUB_{key}" 
             session = getattr(config, string_key)
             if session:
-                setattr(
-                    self,
-                    key,
-                    Client(
-                        name=name,
-                        api_id=config.API_ID,
-                        api_hash=config.API_HASH,
-                        session_string=session,
-                    ),
+                client = Client(
+                    name=name,
+                    api_id=config.API_ID,
+                    api_hash=config.API_HASH,
+                    session_string=session,
                 )
+                setattr(self, key, client)
+                
 
     async def boot_client(self, num: int, client: Client):
         """
@@ -49,12 +53,15 @@ class Userbot(Client):
 
         await client.start()
         
-    
+        
+        if client not in self.clients:
+            self.clients.append(client)
+        # -----------------------------
+
         try:
             await client.send_message(config.LOGGER_ID, f"Assistant {num} Started")
         except:
             logger.error(f"Assistant {num} failed to send message in log group.")
-            # raise SystemExit(f"Assistant {num} failed to send message in log group.")
 
         
         me = await client.get_me()
