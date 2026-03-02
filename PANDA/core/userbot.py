@@ -59,7 +59,7 @@ class Userbot(Client):
         # -----------------------------
 
         try:
-            await client.send_message(config.LOGGER_ID, f"Assistant {num} Started")
+            await client.send_message(config.LOGGER_ID, f"အသံဖွင့်ပေးသည် စနစ် စတင်ပြီဖြစ်ပါသည်")
         except:
             logger.error(f"Assistant {num} failed to send message in log group.")
 
